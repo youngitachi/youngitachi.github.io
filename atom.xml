@@ -1,23 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://youngitachi.github.io</id>
-    <title>Gridea</title>
-    <updated>2019-06-22T16:13:52.354Z</updated>
+    <title>youngitachi</title>
+    <updated>2019-06-22T16:20:03.604Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://youngitachi.github.io"/>
     <link rel="self" href="https://youngitachi.github.io/atom.xml"/>
-    <subtitle>温故而知新</subtitle>
+    <subtitle>A little knowledge is a dangerous thing.</subtitle>
     <logo>https://youngitachi.github.io/images/avatar.png</logo>
     <icon>https://youngitachi.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2019, Gridea</rights>
+    <rights>All rights reserved 2019, youngitachi</rights>
     <entry>
         <title type="html"><![CDATA[二叉搜索树与双向链表]]></title>
         <id>https://youngitachi.github.io/post/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao</id>
         <link href="https://youngitachi.github.io/post/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao">
         </link>
         <updated>2019-06-22T15:38:17.000Z</updated>
-        <content type="html"><![CDATA[<p>《剑指 offer》面试题36，将一个二叉搜索树在原地转换为双向链表。
-此题考察中序遍历，但是其递归着实让我想了很长时间，因为陷入了一个苦难的境地，认为遍历左子树和右子树时是不一样的，导致无法写出正确的递归，即使在看了一遍解答之后仍然不能理解，但是借着解答中的，<strong>维护一个当前访问过的结点中最大的结点</strong>的思路，想到了采用中序遍历可以找到当前未访问结点的最小结点。当找到了这个最小结点时，很自然，已访问的最大值结点的后一个结点就是这个找到的未访问结点的最小值结点了，将当前访问过的最大值结点更新为这个找到的未访问的最小值结点，然后接着进行中序遍历，找到未访问结点中的最小值结点继续之前的操作。
+        <summary type="html"><![CDATA[<p>《剑指 offer》面试题36，将一个二叉搜索树在原地转换为双向链表。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>《剑指 offer》面试题36，将一个二叉搜索树在原地转换为双向链表。</p>
+<!-- more -->
+<p>此题考察中序遍历，但是其递归着实让我想了很长时间，因为陷入了一个苦难的境地，认为遍历左子树和右子树时是不一样的，导致无法写出正确的递归，即使在看了一遍解答之后仍然不能理解，但是借着解答中的，<strong>维护一个当前访问过的结点中最大的结点</strong>的思路，想到了采用中序遍历可以找到当前未访问结点的最小结点。当找到了这个最小结点时，很自然，已访问的最大值结点的后一个结点就是这个找到的未访问结点的最小值结点了，将当前访问过的最大值结点更新为这个找到的未访问的最小值结点，然后接着进行中序遍历，找到未访问结点中的最小值结点继续之前的操作。
 代码如下：</p>
 <pre><code class="language-java">public class Num36 {
     public static class Node {

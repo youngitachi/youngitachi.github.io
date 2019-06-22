@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8" >
 
-<title>二叉搜索树与双向链表 | Gridea</title>
-<meta name="description" content="温故而知新">
+<title>二叉搜索树与双向链表 | youngitachi</title>
+<meta name="description" content="A little knowledge is a dangerous thing.">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://youngitachi.github.io/favicon.ico?v=1561220027671">
+<link rel="shortcut icon" href="https://youngitachi.github.io/favicon.ico?v=1561220397701">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://youngitachi.github.io/styles/main.css">
 
@@ -30,8 +30,8 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://youngitachi.github.io">
-        <img src="https://youngitachi.github.io/images/avatar.png?v=1561220027671" class="site-logo">
-        <h1 class="site-title">Gridea</h1>
+        <img src="https://youngitachi.github.io/images/avatar.png?v=1561220397701" class="site-logo">
+        <h1 class="site-title">youngitachi</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
         <div class="line"></div>
@@ -80,7 +80,7 @@
       
     </div>
     <div class="site-description">
-      温故而知新
+      A little knowledge is a dangerous thing.
     </div>
     <div class="site-footer">
       Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://youngitachi.github.io/atom.xml" target="_blank">RSS</a>
@@ -96,8 +96,9 @@
             <div class="post-date">2019-06-22</div>
             
             <div class="post-content">
-              <p>《剑指 offer》面试题36，将一个二叉搜索树在原地转换为双向链表。
-此题考察中序遍历，但是其递归着实让我想了很长时间，因为陷入了一个苦难的境地，认为遍历左子树和右子树时是不一样的，导致无法写出正确的递归，即使在看了一遍解答之后仍然不能理解，但是借着解答中的，<strong>维护一个当前访问过的结点中最大的结点</strong>的思路，想到了采用中序遍历可以找到当前未访问结点的最小结点。当找到了这个最小结点时，很自然，已访问的最大值结点的后一个结点就是这个找到的未访问结点的最小值结点了，将当前访问过的最大值结点更新为这个找到的未访问的最小值结点，然后接着进行中序遍历，找到未访问结点中的最小值结点继续之前的操作。
+              <p>《剑指 offer》面试题36，将一个二叉搜索树在原地转换为双向链表。</p>
+<!-- more -->
+<p>此题考察中序遍历，但是其递归着实让我想了很长时间，因为陷入了一个苦难的境地，认为遍历左子树和右子树时是不一样的，导致无法写出正确的递归，即使在看了一遍解答之后仍然不能理解，但是借着解答中的，<strong>维护一个当前访问过的结点中最大的结点</strong>的思路，想到了采用中序遍历可以找到当前未访问结点的最小结点。当找到了这个最小结点时，很自然，已访问的最大值结点的后一个结点就是这个找到的未访问结点的最小值结点了，将当前访问过的最大值结点更新为这个找到的未访问的最小值结点，然后接着进行中序遍历，找到未访问结点中的最小值结点继续之前的操作。
 代码如下：</p>
 <pre><code class="language-java">public class Num36 {
     public static class Node {
