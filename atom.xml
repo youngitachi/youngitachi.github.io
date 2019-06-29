@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://youngitachi.github.io</id>
     <title>youngitachi</title>
-    <updated>2019-06-29T15:20:51.210Z</updated>
+    <updated>2019-06-29T15:23:32.633Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://youngitachi.github.io"/>
     <link rel="self" href="https://youngitachi.github.io/atom.xml"/>
@@ -16,9 +16,12 @@
         <link href="https://youngitachi.github.io/post/leetcode-11-container-with-most-water">
         </link>
         <updated>2019-06-29T07:26:12.000Z</updated>
-        <content type="html"><![CDATA[<p>原题链接：<a href="https://leetcode.com/problems/container-with-most-water/">11. Container With Most Water</a>
-分析：
-对于任意两个位置i, j(i &lt; j)，其能够盛的水量为：<code>area[i]\j] = (j - i) * min(height[i], height[j])</code>，而本题的意思实际上就是要找到所有值当中的最大值。
+        <summary type="html"><![CDATA[<p>原题链接：<a href="https://leetcode.com/problems/container-with-most-water/">11. Container With Most Water</a></p>
+]]></summary>
+        <content type="html"><![CDATA[<p>原题链接：<a href="https://leetcode.com/problems/container-with-most-water/">11. Container With Most Water</a></p>
+<!-- more -->
+<p>分析：</p>
+<p>对于任意两个位置i, j(i &lt; j)，其能够盛的水量为：<code>area[i]\j] = (j - i) * min(height[i], height[j])</code>，而本题的意思实际上就是要找到所有值当中的最大值。
 很明显，暴力求解，是O(n^2)的，而且思路很简单，既然此题不是easy难度的，估计不是用暴力求解的，虽然想了半天最后还是用了暴力，居然也过了，但是时间是超过1秒的，肯定是不行的，想要通过面试，必须要更快的算法。
 这个题最终也没有在没有提示的情况下想到解法，故查看了tag：array，double pointers，第一个tag当然是废话，重要的是第二个tag，双指针，这个在2sum里面用到过，基本就是首尾两个指针，往中间进行夹逼。设首指针为i，尾指针为j，双指针的问题，最关键的就是要判断下一步到底该i++还是j--。而相比起暴力而言，我们这么做，会少算很多area，关键就在于，我们能保证，少算的这些area，在当前的状态下，已经能判断出不可能成为候选答案了。
 这里在每一步的状态，我们能获取到的数据有height[i]，height[j]，还有当前的最大面积，以及当前的面积area[i][j]，因为我们是要求最大的值，所以我们需要根据当前的状态，来判断那些可能性已经可以被排除了。
