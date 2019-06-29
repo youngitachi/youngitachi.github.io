@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>LeetCode 11. Container With Most Water | youngitachi</title>
+<meta name="description" content="A little knowledge is a dangerous thing.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://youngitachi.github.io/favicon.ico?v=1561821648249">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://youngitachi.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://youngitachi.github.io">
+        <img src="https://youngitachi.github.io/images/avatar.png?v=1561821648249" class="site-logo">
+        <h1 class="site-title">youngitachi</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      A little knowledge is a dangerous thing.
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://youngitachi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">LeetCode 11. Container With Most Water</h2>
+            <div class="post-date">2019-06-29</div>
+            
+            <div class="post-content">
+              <p>原题链接：<a href="https://leetcode.com/problems/container-with-most-water/">11. Container With Most Water</a>
+分析：
+对于任意两个位置i, j(i &lt; j)，其能够盛的水量为：<code>area[i]\j] = (j - i) * min(height[i], height[j])</code>，而本题的意思实际上就是要找到所有值当中的最大值。
+很明显，暴力求解，是O(n^2)的，而且思路很简单，既然此题不是easy难度的，估计不是用暴力求解的，虽然想了半天最后还是用了暴力，居然也过了，但是时间是超过1秒的，肯定是不行的，想要通过面试，必须要更快的算法。
+这个题最终也没有在没有提示的情况下想到解法，故查看了tag：array，double pointers，第一个tag当然是废话，重要的是第二个tag，双指针，这个在2sum里面用到过，基本就是首尾两个指针，往中间进行夹逼。设首指针为i，尾指针为j，双指针的问题，最关键的就是要判断下一步到底该i++还是j--。而相比起暴力而言，我们这么做，会少算很多area，关键就在于，我们能保证，少算的这些area，在当前的状态下，已经能判断出不可能成为候选答案了。
+这里在每一步的状态，我们能获取到的数据有height[i]，height[j]，还有当前的最大面积，以及当前的面积area[i][j]，因为我们是要求最大的值，所以我们需要根据当前的状态，来判断那些可能性已经可以被排除了。
+从直观上来讲，我们想要让高度越高越好，那么体现在决策上就是，当height[i] &gt; height[j]时，j--，否则i++。下面我们需要证明这个决策确实是对的。
+首先我们看看这种决策，究竟有啥性质。我们以height[i]&gt;height[j]为例进行说明
+a. height[i]一定是目前来遍历过的高度中的最大值
+b. 对于[0, i-1]中的每一个数m，[j, len - 1]中至少有一个n使得：<code>height[m] &lt; height[n]</code>
+c. 对于[j+1, n-1]中的每一个数n，[0, i]中至少存在一个m使得：<code>height[n] &lt; height[m]</code>
+这三个其实很容易被推导出来的，因为我们的决策是：高度更小的那一个指针进行移动，所以，如果一个指针移动了，说明指针另一边有比自己高的，而目前指针更高的一个，显然是目前来讲，最高的一个。
+下面让我们讨论下方案的正确性：
+由于<code>height[i]&gt;height[j]</code>，所以我们会执行j--，这样，我们认为对于<code>i &lt; m &lt; j</code>，area[m][j]已经没有必要去计算了，因为目前的最大值已经大于等于它了。其实因为：<code>area\[i]\[j] = (j - i) * height[j]</code>，而<code>area[m][j] = (j - m) * min(height[m], height[j]) &lt;= (j - m) * height[j] &lt; (j - i) * height[j] = area[i][j]</code>。
+对于<code>i&lt;m&lt;j&lt;n&lt;len</code>的面积area[m][n]我们同样也是没有去计算的，同样是因为当前计算过的值肯定已经超过他了
+<code>area[i][n] = (n - i) * height[n]</code>（此出利用了性质a），而<code>area[m][n] = (n - m) * min(height[m], height[n]) &lt;= (n - m) * height[n] &lt; (n - i) * height[n] = area[i][n]</code>，而此时的最大值肯定是&gt;= area[i][n]的，因此这些值也是不必要的了。另一边的分析也是如此，也就是说，我们采用上面的决策，漏掉的那些area的值确实不会比现在的最大值更大了，因此可以舍弃。</p>
+<p>最终代码如下：</p>
+<pre><code class="language-c++">class Solution {
+public:
+    int maxArea(vector&lt;int&gt;&amp; height) {
+        int i = 0, j = height.size() - 1;
+        int mx = 0;
+        while (i &lt; j) {
+            int t = (j - i) * min(height[i], height[j]);
+            if (t &gt; mx) mx = t;
+            height[i] &lt; height[j] ? i++ : j--;
+        }
+        return mx;
+    }
+};
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://youngitachi.github.io/tag/uQDtBLHnv" class="tag">
+                    LeetCode
+                  </a>
+                
+                  <a href="https://youngitachi.github.io/tag/6SGyg-k1v" class="tag">
+                    Double Pointers
+                  </a>
+                
+                  <a href="https://youngitachi.github.io/tag/UgIqM4tIL" class="tag">
+                    Array
+                  </a>
+                
+                  <a href="https://youngitachi.github.io/tag/-pN2XzrYq" class="tag">
+                    C/C++
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://youngitachi.github.io/post/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao">
+                  <h3 class="post-title">
+                    二叉搜索树与双向链表
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '0760a0ab69ca06d30203',
+        clientSecret: '279cbaf338290e5dd98e01ef13a8ec518e7e0fad',
+        repo: 'youngitachi.github.io',
+        owner: 'youngitachi',
+        admin: ['youngitachi'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
