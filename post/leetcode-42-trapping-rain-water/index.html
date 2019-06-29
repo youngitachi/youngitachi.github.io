@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>LeetCode 42. Trapping Rain Water | youngitachi</title>
+<meta name="description" content="A little knowledge is a dangerous thing.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://youngitachi.github.io/favicon.ico?v=1561829881042">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://youngitachi.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://youngitachi.github.io">
+        <img src="https://youngitachi.github.io/images/avatar.png?v=1561829881042" class="site-logo">
+        <h1 class="site-title">youngitachi</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      A little knowledge is a dangerous thing.
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://youngitachi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">LeetCode 42. Trapping Rain Water</h2>
+            <div class="post-date">2019-06-30</div>
+            
+            <div class="post-content">
+              <p>原题链接：<a href="https://leetcode.com/problems/trapping-rain-water/">Trapping Rain Water</a></p>
+<!-- more -->
+<h2 id="方法1">方法1</h2>
+<p>此题和挑战程序设计竞赛中P86的题很像，得益于该题的分析，学会了用栈来解决该问题。</p>
+<p>解决办法：</p>
+<p>当数组数字一值在递减时，还没有形成一个容器，无法计算任何面积，将索引都压栈；</p>
+<p>当数字和上个数字一样时，将上个数字的需要出栈，将此时的索引压栈；</p>
+<p>此时数字比之前的要大，若栈非空，则一定可以形成一个容器，可以用来计算面积。</p>
+<p>计算面积需要两个元素，栈顶元素和栈顶第二个元素，栈顶元素是用来确定这个容器的底部的高度的，第二栈顶元素则是用来和当前数字共同确定该容器的高，从而通过当前数字的索引与第二栈顶元素的索引相减得到宽，而用容器高度减去容器底部的高度得到容器的高来计算面积。</p>
+<p>实现代码如下：</p>
+<pre><code class="language-c++">class Solution {
+public:
+    int trap(vector&lt;int&gt;&amp; height) {
+    stack&lt;int&gt; st;
+    int i = 0;
+    while (i &lt; height.size() &amp;&amp; !height[i]) i++;
+    if (i == height.size() - 1) return 0;
+    st.push(i++);
+    int interval = 0;
+    int sum = 0;
+    while (i &lt; height.size()) {
+        if (st.empty()) {
+            st.push(i++);
+            continue;
+        }
+        if (height[i] &lt; height[st.top()]) {
+            st.push(i);
+            i++;
+            continue;
+        }
+        if (height[i] == height[st.top()]) {
+            st.pop();
+            st.push(i);
+            i++;
+            continue;
+        }
+
+        // 此时，height[i] &gt; height[st.top()]
+        if (i &gt;= height.size()) break;
+        if (st.size() &lt; 2) {
+            st.pop();
+            st.push(i++);
+            continue;
+        }
+        int first = st.top();
+        st.pop();
+        int second = st.top();
+        // st.pop();
+        while (!st.empty()) {
+            cout &lt;&lt; sum &lt;&lt; endl;
+            sum += (i - second - 1) * (min(height[second], height[i]) - height[first]);
+            if (height[second] &gt; height[i]) {
+
+                break;
+            }
+            first = second;
+            st.pop();
+            if (st.empty()) break;
+            second = st.top();
+        }
+        st.push(i++);
+        // i++;
+
+    }
+    return sum;        
+    }
+};
+</code></pre>
+<h2 id="方法2">方法2</h2>
+<p>提交以后发现，12ms，时间上只击败了25%左右的人，诧异的同时去查看了0ms的代码，发现原来又是<strong>双指针</strong>！！！突然想起，这个题是我从上个双指针的题<a href="https://leetcode.com/problems/container-with-most-water/">11. Container With Most Water</a>跳转过来的，类似的题目有着相同的tag，即双指针。</p>
+<p>看了代码后发现，我没有看穿其中一个本质，即左边某个高度的地方，在下一个位置能盛多少水，在右边的地方，其实只和右边最高的高度相关，而不是和最近第一个开始增加的数相关，例如序列[4,5,1,7,2,8,3]，即其中的5，1组成的一个凹槽部分其实能盛多少水，不是从5，1过后第一个开始增加的数7决定，而是由右边最大的数8，决定的，例如用[4,5,1,3,2,8,3]这样的序列就更能看出来了，实际上在位置1处，可以盛水的高度是5，而不是后面的3。当然，这其实和计算方法相关，在前面使用栈的方法中，是横行计算面积的，而这个方法则是竖向计算面积的。竖向计算面积，即直接可以在每个位置处，计算出高位置盛水的高度，然后减去自己的高度即为盛水的量。可以看到，在计算1处能盛的最大高度时，和左边最大高度有关系，因此需要维护左边最大高度，同理右边也需要维护最大高度。</p>
+<p>那么问题来了，双指针的关键，是需要根据当前的状态确定下一个状态是left++还是right--；这个又该如何去判断呢？直观来讲，我们还是想保留大的，移动小的（即高的不动，移动矮的）</p>
+<p>这里还是需要对某些性质牢记并运用：</p>
+<p>需要牢记的是：<strong>能够盛多少水，当然是由更矮的那边决定的，对于任何一个位置，它能盛多少水，是由两边的最大值的最小值来决定的</strong>。</p>
+<p>因此，对于首尾指针遍历过的位置，我们肯定是需要维护一个左边的最大值和右边的最大值的。同时，在计算一个位置能盛多少水时，我们需要知道左右两边最大值的最小值。假设当前左右指针为left，right，左右两边维护的最大值为leftMax和rightMax，对于left而言，left右边的(left, right)区间的数字并没有算进去，因此若leftMax&gt;rightMax，也不能说left的左右两边的最大值的最小值为rightMax，而如果leftMax&lt;rightMax，则很明显，left左右两边的最大值的最小值就是leftMax了。对于right而言同理。也就是说，我们在计算left位置能盛多少水时，只需要保证leftMax &lt; rightMax即可。对于前面说的高的不动，矮的移动的法则，只要height[left] != leftMax即可，因为这相当于左边从最大值处移动了，说明右边有比leftMax更大的数，而如果，height[left] == leftMax呢，那只需要height[left]&lt; height[right]即可，同时我们发现其实只要height[left] &lt; height[right]，我们都能知道左边的最大值一定是小于右边的，因为：</p>
+<p>若height[left] == leftMax，则很明显leftMax &lt; height[right]，</p>
+<p>若height[left] != leftMax，则由于left已经移动过，说明左边的最大值一定小于右边</p>
+<p>此时，可以用来计算left位置处能盛的水了，而right位置处则在此时还不行。</p>
+<p>也就是说，当height[left]&lt; height[right]时，可以计算left位置处的，反之可以计算right位置处的</p>
+<p>多说无益，代码如下：</p>
+<pre><code class="language-c++">class Solution {
+public:
+    int trap(vector&lt;int&gt;&amp; height) {
+        int result = 0;
+        int left = 0;
+        int right = height.size() - 1;
+        int left_max = 0;
+        int right_max = 0;
+        
+        while (left &lt; right) {
+            if (height[left] &lt; height[right]) {
+                if (height[left] &lt; left_max) {
+                    result += (left_max - height[left]);
+                } else {
+                    left_max = height[left];
+                }
+                
+                ++left;
+            } else {
+                if (height[right] &lt; right_max) {
+                    result += (right_max - height[right]);
+                } else {
+                    right_max = height[right];
+                }
+                
+                --right;
+            }
+        }
+        
+        return result;
+    }
+};
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://youngitachi.github.io/tag/nHTFlrXhj" class="tag">
+                    Stack
+                  </a>
+                
+                  <a href="https://youngitachi.github.io/tag/uQDtBLHnv" class="tag">
+                    LeetCode
+                  </a>
+                
+                  <a href="https://youngitachi.github.io/tag/6SGyg-k1v" class="tag">
+                    Double Pointers
+                  </a>
+                
+                  <a href="https://youngitachi.github.io/tag/-pN2XzrYq" class="tag">
+                    C/C++
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://youngitachi.github.io/post/leetcode-11-container-with-most-water">
+                  <h3 class="post-title">
+                    LeetCode 11. Container With Most Water
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '0760a0ab69ca06d30203',
+        clientSecret: '279cbaf338290e5dd98e01ef13a8ec518e7e0fad',
+        repo: 'youngitachi.github.io',
+        owner: 'youngitachi',
+        admin: ['youngitachi'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
